@@ -72,3 +72,103 @@ eval(dt_dy)
 ```
 
 new new
+
+## Drawing Derivatives 
+
+### Plotting a fucntion in ggplot2
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+#define function 
+eq = function(x){3*x^2+4}
+
+#plot over a specific range using geom_function 
+ggplot(data.frame(x = c(1, 100)), aes(x =x)) +
+  geom_function(fun = eq)
+```
+
+```{r}
+eq_2 = function(x){2.4 - 5*x^3 +2.1*x^2}
+
+ggplot(data.frame(x=c(-50,50)), aes(x=x)) +
+  geom_function(fun = eq_2)
+```
+
+## Plotting derivatives 
+
+Look at C(t) = t\^3
+
+plotting 1st derivative
+
+```{r}
+#store function of c(T)
+ct <- function(t){t^3}
+
+ggplot(data.frame(t=c(-5,5)), aes(x=t)) + 
+  geom_function(fun=ct)
+```
+
+```{r}
+#find the derivative 
+dc_dt <- D(expression(t^3), 't')
+dc_dt
+```
+
+#plot together
+
+```{r}
+dc_dt_fun <- function(t) {3*t^2}
+
+ggplot(data.frame(t=c(-5,5)), aes(x=t)) +
+  geom_function(fun = ct, color = "red")+
+  geom_function(fun = dc_dt_fun, color = "blue")
+```
+
+## Partial derivatives in R
+
+f(x,y,z) = 2xy - 3x^2^zX\^3
+
+find all partials partialf/partialx, partialf/ partialy, partialf/partialz
+
+```{r}
+f_xyz <- expression(2*x*y - 3*(x^2)*(z^3))
+
+#partial with respect to x 
+df_dx <- D(f_xyz, 'x')
+df_dx
+```
+
+```{r}
+#partial with respect to you 
+df_dy <- D(f_xyz, 'y')
+df_dy
+```
+
+```{r}
+#partial with respect to z 
+df_dz <- D(f_xyz, 'z')
+df_dz
+```
+
+# instantaneous slope = derivative 
+
+## Fun 
+
+```{r}
+library(palmerpenguins)
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g)) +
+         geom_point(aes(color = species)) +
+  scale_color_manual(values = c("purple","cyan3","goldenrod")) +
+  labs(x = "Flipper length (mm)",
+       y = "Body mass (g)",
+       title = "Palmer penguin size measurements",
+       subtitle = "Palmer Archipelago, Antarctica (2007 - 2009)", 
+             caption = "Collected by Dr. Kristen Gorman and colleages at Palmer Station LTER") +
+  coord_flip() + #flips x and y
+  facet_wrap(~island) +
+  theme_minimal()
+         
+```
